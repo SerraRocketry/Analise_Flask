@@ -1,0 +1,31 @@
+{% extends "base.html" %} {% block content %}
+<main>
+  <div class="graph_card", style="width: 95%; height: 40vw;">
+    <canvas id="myChart"></canvas>
+  </div>
+  <script>
+    const chartLabels = {{tempo}};
+
+    const data = {
+        labels: chartLabels,
+        datasets: [{
+            label: 'Empuxo (N)',
+            backgroundColor: '#696cff',
+            borderColor: '#696cff',
+            data: {{forca}}
+        }]
+    };
+
+    const config = {
+        type: 'line',
+        data: data,
+        options: { maintainAspectRatio: false }
+    };
+
+    const myChart = new Chart(
+        document.getElementById('myChart'),
+        config
+    );
+  </script>
+</main>
+{% endblock %}

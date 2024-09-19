@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block content %}
+<main>
+  <div id="upload-data-div">
+    <form method="post" enctype="multipart/form-data">
+      <input type="file" name="file" />
+      <input type="submit" value="Upload" />
+    </form>
+  </div>
+  <div id="output-data-div">
+    <div class="card"></div>
+    <div class="card"></div>
+  </div>
+</main>
+{% endblock %}

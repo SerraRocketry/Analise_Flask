@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Serra Rocketry</title>
+    <link
+      href="{{url_for('static', filename = 'css/app.css')}}"
+      rel="stylesheet"
+    />
+    <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+
+  </head>
+  <body>
+    <header>
+      <nav class="navigation">
+        <div class="logo-div">
+          <img src="static/assets/LOGO - SEM TEXTO.png" alt="" class="logo" />
+          <h1>Serra Rocketry</h1>
+        </div>
+
+        <ul class="menu-list">
+          <li>
+            <a href="/home"><h2>Home</h2></a>
+          </li>
+          <li>
+            <a href="/analises"><h2>Análises</h2></a>
+          </li>
+          <li>
+            <a href="/galeria"><h2>Galeria</h2></a>
+          </li>
+          <li>
+            <a href="/conexoes"><h2>Conexões</h2></a>
+          </li>
+        </ul>
+
+        <div class="humbarger">
+          <div class="bar"></div>
+          <div class="bar2 bar"></div>
+          <div class="bar"></div>
+        </div>
+      </nav>
+    </header>
+    {% block content %} {% endblock %}
+    <!-- <footer>
+      <p>Desenvolvido por Serra Rocketry - 2024</p>
+    </footer> -->
+    <script src="{{ url_for('static', filename = 'js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/app.js') }}"></script>
+    <script src="{{ url_for('static', filename = 'js/socket.io.js') }}"></script>
+  </body>
+</html>

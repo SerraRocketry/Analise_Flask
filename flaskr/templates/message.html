@@ -1,0 +1,14 @@
+{% extends "base.html" %} {% block content %}
+<main>
+  <div class="card console" style="width: 100%;">
+    <div class="termsx" id="log">
+      <h2>Aguardando conexão...</h2>
+    </div>
+    <form id="cmd_form" action="javascript:void(0);">
+      <input type="text" id="msg" name="msg" placeholder="Enviar comando..."/>
+      <input type="submit" value="Enviar" id="send" />
+      <input type="submit" value="Desconectar" id="close">
+    </form>
+  </div>
+</main>
+{% endblock %}

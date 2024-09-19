@@ -1,0 +1,15 @@
+{% extends "base.html" %} {% block content %}
+<main>
+  <div class="card">
+    <form action="/sconnect" id="form_serial" method="post">
+      <label class="connect-label" for="conexoes">Selecione a porta:</label>
+      <select name="serialports" id="serialports">
+        {% for o in serialp %}
+        <option value={{o.serialp}}>{{o.serialp}}</option>
+        {% endfor %}
+      </select>
+      <input type="submit" value="Conectar" id="connect"/>
+    </form>
+  </div>
+</main>
+{% endblock %}

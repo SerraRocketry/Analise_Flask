@@ -1,0 +1,11 @@
+{% extends "base.html" %} {% block content %}
+<main>
+  <div class="card">
+    <form method="POST" action="/motor_upload" enctype="multipart/form-data">
+      <label class="upload-label" for="file">Enviar arquivo</label>
+      <input type="file" name="file" id="file" accept=".xlsx" />
+      <input type="submit" value="Upload" />
+    </form>
+  </div>
+</main>
+{% endblock %}
