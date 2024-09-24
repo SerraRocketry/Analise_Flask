@@ -13,32 +13,3 @@ $(document).ready(function () {
   });
 });
 
-$(document).ready(function () {
-  var socket = io();
-  var msgInput = document.getElementById("msg");
-  var send = document.getElementById("send");
-  var close = document.getElementById("close");
-  var output = document.getElementById("output");
-
-  socket.on("my response", function (msg) {
-    console.log(msg.time + " -> " + msg.data);
-    $("#log").append("<p>" + msg.time + " -> " + msg.data + "</p>");
-  });
-
-  send.addEventListener("click", function () {
-    var msg = msgInput.value;
-    if (msg) {
-      socket.emit("message", { msg: msg });
-    }
-  });
-
-  close.addEventListener("click", function () {
-    console.log("close");
-    socket.emit("close", {});
-  });
-});
-
-// window.setInterval(function () {
-//   var elem = document.getElementById("log");
-//   elem.scrollTop = elem.scrollHeight;
-// }, 200);

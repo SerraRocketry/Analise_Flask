@@ -4,7 +4,7 @@
     <canvas id="myChart"></canvas>
   </div>
   <script>
-    const chartLabels = {{tempo}};
+    const chartLabels = {{x}};
 
     const data = {
         labels: chartLabels,
@@ -12,7 +12,7 @@
             label: 'Empuxo (N)',
             backgroundColor: '#696cff',
             borderColor: '#696cff',
-            data: {{forca}}
+            data: {{y}}
         }]
     };
 
@@ -26,6 +26,10 @@
         document.getElementById('myChart'),
         config
     );
+
   </script>
+  <div class="card", id="table">
+    {{resultado}}
+  </div>
 </main>
 {% endblock %}
