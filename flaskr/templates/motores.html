@@ -1,0 +1,9 @@
+{% extends "base.html" %} {% block content %}
+<main>
+  <div class="card", style="display: flex; flex-direction: column;">
+    {% for motor in motores %}
+      <h2>{{motor}}</h2>
+    {% endfor %}
+  </div>
+</main>
+{% endblock %}

@@ -1,3 +1,13 @@
+:root {
+  --colorbase: #323249;
+  --colorbasetext: #cbcbe2;
+  --bgcolor: #2b2c40;
+  --border-color: #232333;
+  --box-shadow: 0 0 0.375rem 0.25rem rgb(0 0 0 / 15%);
+  --primary-bg: #696cff;
+  --hover-bg: #4a4cc9;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -6,95 +16,108 @@
 
 html,
 body {
-  color: #cbcbe2;
+  color: var(--colorbasetext);
   overflow-x: hidden;
   font-family: "Montserrat", sans-serif;
   font-size: 1.1rem;
-  background-color: #2b2c40;
+  background-color: var(--bgcolor);
   cursor: default;
 }
 
-main{
+main, form, .console, .logo-div, .output-data-div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+main {
+  flex-direction: column;
+}
+
+form {
+  flex-direction: row;
+}
+
+footer, .card, .graph_card {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin: 5px 0;
+  border: 3px solid var(--border-color);
+  background-color: var(--colorbase);
+  box-shadow: var(--box-shadow);
+}
+
+.navigation {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  margin-top: 0;
+  border: 3px solid var(--border-color);
+  background-color: var(--colorbase);
+  box-shadow: var(--box-shadow);
+  height: 12vh;
+  justify-content: space-between;
+  min-height: 10vh;
+  min-width: 100%;
+  border-bottom-width: 3px;
+}
+
+footer {
+  position: absolute;
+  bottom: 0;
+  min-height: 2vh;
+  min-width: 100%;
+  border-top-width: 3px;
+}
+
+.card, .graph_card {
+  border-radius: 14px;
+  padding: 10px;
+}
+
+.analisys {
+  width: 100%;
+  display: flex; 
+  flex-direction: row;
+}
+
+.graph_card {
+  width: 65%;
+  background-color: var(--colorbasetext);
+  min-height: 50vh;
+}
+
+#save_btn{
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
 }
 
-form {
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+label{
+  padding-right: 1vw;
 }
 
-.navigation {
-  height: 12vh;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 10vh;
-  min-width: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 0px;
-  margin-bottom: 10px;
-  border-bottom: 3px solid #232333;
-  background-color: #323249;
-  box-shadow: 0 0 0.375rem 0.25rem rgb(0 0 0 / 15%);
+.t_info{
+  width: 30%;
 }
 
-footer {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  position: absolute;
-  bottom: 0;
-  min-height: 2vh;
-  min-width: 100%;
-  padding-top: 10px;
-  padding-bottom: 10px;
-  border-radius: 0px;
-  margin-top: 10px;
-  border-top: 3px solid #232333;
-  background-color: #323249;
-  box-shadow: 0 0 0.375rem 0.25rem rgb(0 0 0 / 15%);
+.t_value{
+  width: 70%;
 }
 
-.card {
-  background-color: #323249;
-  border-radius: 14px;
-  padding: 10px;
-  margin: 5px;
-  box-shadow: 0 0 0.375rem 0.25rem rgb(0 0 0 / 15%);
-  border: 3px solid #232333;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
-}
-
-.graph_card {
-  background-color: #cbcbe2;
-  border-radius: 14px;
-  padding: 10px;
-  margin: 5px;
-  box-shadow: 0 0 0.375rem 0.25rem rgb(0 0 0 / 15%);
-  border: 3px solid #232333;
-  display: flex;
-  flex-direction: row;
-  justify-content: center;
-  align-items: center;
+.val{
+  border: 3px solid var(--hover-bg);
+  border-left-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 0;
 }
 
 .logo {
   max-width: 100px;
-}
-
-.logo-div {
-  display: flex;
-  justify-content: center;
-  align-items: center;
 }
 
 .logo-div h1 {
@@ -105,7 +128,6 @@ footer {
 .navigation .menu-list {
   list-style: none;
   display: flex;
-  top: 11vh;
   justify-content: space-between;
   align-items: center;
   width: 35%;
@@ -114,99 +136,52 @@ footer {
 
 .termsx {
   overflow-y: scroll;
-  scroll-behavior: auto;
   height: 450px;
-  border: 1px solid #232333;
+  border: 1px solid var(--border-color);
   font-family: "Courier New", Courier, monospace;
   font-size: 2rem;
   margin: 10px;
   padding: 10px;
-  background-color: #2b2c40;
+  background-color: var(--bgcolor);
   width: 100%;
 }
 
-.console{
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-}
-
-
-select {
-  background-color: #cbcbe2;
-  box-sizing: border-box;
-  color: #323249;
-  height: 100%;
-  margin: 4px 2px;
-  cursor: pointer;
-  transition-duration: 0.4s;
-  border: 0px;
-  border-radius: 8px;
-  padding: 10px 24px;
-}
-
-input {
-  background-color: #696cff;
+select, input, button, .upload-label {
+  background-color: var(--primary-bg);
   border: none;
-  color: #cbcbe2;
+  color: var(--colorbasetext);
   text-align: center;
   text-decoration: none;
   display: inline-block;
   margin: 4px 2px;
+  cursor: pointer;
   transition-duration: 0.4s;
-  border: 0px;
   border-radius: 8px;
   padding: 10px 24px;
   font-size: 1rem;
 }
 
-input[type="text"]{
-  background-color: #cbcbe2;
-  text-align: left;
-  cursor: text;
-  text-decoration: none;
-  box-sizing: border-box;
-  color: #323249;
-  height: 100%;
-  margin: 4px 2px;
-  transition-duration: 0.4s;
-  border: 0px;
-  border-radius: 8px;
-  padding: 10px 24px;
+select {
+  color: var(--colorbase);
 }
 
-input[type="submit"]:hover {
-  background-color: #189b2e;
-  cursor: pointer;
+input[type="text"] {
+  background-color: var(--colorbasetext);
+  text-align: left;
+  cursor: text;
+  color: var(--colorbase);
+}
+
+input[type="submit"]:hover, .upload-label:hover, button:hover {
+  background-color: var(--hover-bg);
 }
 
 input[type="file"] {
   display: none;
-  cursor: pointer;
 }
 
-#close:hover{
+#close:hover {
   background-color: #9b1818;
-}
-
-.upload-label {
-  background-color: #696cff;
-  border: none;
-  color: #cbcbe2;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  transition-duration: 0.4s;
-  border: 0px;
-  border-radius: 8px;
-  padding: 10px 24px;
-}
-
-.upload-label:hover {
-  background-color: #4a4cc9;
 }
 
 .navigation .humbarger {
@@ -218,7 +193,7 @@ input[type="file"] {
   width: 30px;
   height: 2px;
   margin: 7px;
-  background: #cbcbe2;
+  background: var(--colorbasetext);
 }
 
 .navigation .humbarger:hover {
@@ -226,40 +201,13 @@ input[type="file"] {
 }
 
 .navigation .menu-list li a {
-  color: #cbcbe2;
+  color: var(--colorbasetext);
   font-size: 1.25rem;
   letter-spacing: 2px;
   text-transform: uppercase;
   cursor: pointer;
   transition: color 1s ease, border 1s ease;
   text-decoration: none;
-}
-
-.output-data-div {
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 10px;
-}
-
-button {
-  background-color: #696cff;
-  border: none;
-  color: #cbcbe2;
-  text-align: center;
-  text-decoration: none;
-  display: inline-block;
-  margin: 4px 2px;
-  cursor: pointer;
-  transition-duration: 0.4s;
-  border: 0px;
-  border-radius: 8px;
-  padding: 10px 24px;
-  font-size: 1rem;
-}
-
-button:hover {
-  background-color: #4a4cc9;
 }
 
 h1 {
@@ -274,11 +222,7 @@ h3 {
   font-size: medium;
 }
 
-h4 {
-  font-size: small;
-}
-
-p {
+h4, p {
   font-size: small;
 }
 
@@ -296,7 +240,7 @@ p {
   .navigation .menu-list {
     position: absolute;
     min-width: 100%;
-    background: #323249;
+    background: var(--colorbase);
     text-align: center;
     display: none;
   }
@@ -312,12 +256,20 @@ p {
   }
 
   .navigation .menu-list li a:hover {
-    color: #cbcbe2;
+    color: var(--colorbasetext);
     padding-left: 30px;
     background: rgba(177, 212, 224, 0.2);
   }
 
   .navigation .humbarger {
     display: block;
+  }
+
+  .analisys {
+    flex-direction: column;
+  }
+
+  .graph_card {
+    width: 100%;
   }
 }

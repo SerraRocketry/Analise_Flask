@@ -5,18 +5,12 @@ from scipy.optimize import curve_fit
 
 class motor_analisys:
     def __init__(self, archive):
-        self.df = pd.read_csv(
-            archive, sep='\t', header=None).iloc[:, 0].str.split(';', expand=True)
-        self.df[2] = self.df[2].astype(float) * 9.81
-        self.df[3] = self.df[3].astype(float) / 100
-        temp = self.df[3].iloc[0]
-        self.df[3] -= temp
+        self.df = pd.read_csv(archive, sep=';')
+        self.df['Empuxo'] = self.df['Empuxo'].astype(float) * 9.81
+        self.df['Tempo'] = self.df['Tempo'].astype(float) / 1000
 
     def get_data(self):
-        dados_result = {'Data':self.df[0],'Hora':self.df[1],'Empuxo (N)': self.df[2], 'Tempo (s)': self.df[3]}
-        df_result = pd.DataFrame(dados_result)
-        return df_result
-    
+        return self.df
 
     def get_result(self):
         def classe(total, medio, tempo):
@@ -32,64 +26,69 @@ class motor_analisys:
 
             return 'ERRO'
 
-        dados_result = {'Info': ['Impulso', 'Empuxo max (N)', 'Empuxo medio (N)', 'Pontos amostrais', 'Duração (s)', 'Classe'],
-                        'Valor': [0.0, 0.0, 0.0, 0, 0.0, '']}
-        df_result = pd.DataFrame(dados_result)
+        impulso = integrate.simpson(y=self.df['Empuxo'], x=self.df['Tempo'])
+        empuxo_max = max(self.df['Empuxo'])
+        empuxo_medio = (
+            1 / (self.df['Tempo'].iloc[-1] - self.df['Tempo'].iloc[0])) * impulso
+        pontos_amostrais = len(self.df)
+        duracao = self.df['Tempo'].iloc[-1] - self.df['Tempo'].iloc[0]
+        classe_motor = classe(impulso, empuxo_medio, duracao)
+        curva = self.get_curve()
 
-        df_result.at[0, 'Valor'] = integrate.simpson(
-            y=self.df[2], x=self.df[3])
-        df_result.at[1, 'Valor'] = max(self.df[2])
-        df_result.at[2, 'Valor'] = (
-            1/(self.df[3].iloc[-1]-self.df[3].iloc[0]))*df_result.at[0, 'Valor']
-        df_result.at[3, 'Valor'] = len(self.df)
-        df_result.at[4, 'Valor'] = self.df[3].iloc[-1]-self.df[3].iloc[0]
-        df_result.at[5, 'Valor'] = classe(
-            df_result.at[0, 'Valor'], df_result.at[2, 'Valor'], df_result.at[4, 'Valor'])
+        dados_result = {
+            'Impulso': [impulso],
+            'Empuxo max (N)': [empuxo_max],
+            'Empuxo medio (N)': [empuxo_medio],
+            'Pontos amostrais': [pontos_amostrais],
+            'Duração (s)': [duracao],
+            'Classe': [classe_motor],
+            'Curva': [curva]
+        }
+        self.df_result = pd.DataFrame(dados_result)
 
-        return df_result
+        return self.df_result
 
     def get_curve(self):
-        def objective(x, a, b, c, d, e, f, g, h):
-            return (a * x) + (b * x**2) + (c * x**3) + (d * x**4) + (e * x**5) + (f * x*6) + (g * x*7) + (h)
+        def objective(x, a, b, c, d, e, f):
+            return (a * x) + (b * x**2) + (c * x**3) + (d * x**4) + (e * x**5) + f
 
-        popt, _ = curve_fit(objective, self.df[3], self.df[2])
-        a, b, c, d, e, f, g, h = popt
+        popt, _ = curve_fit(objective, self.df['Tempo'], self.df['Empuxo'])
+        a, b, c, d, e, f = popt
+        return f'({a} * t) + ({b} * t**2) + ({c} * t**3) + ({d} * t**4) + ({e} * t**5) + {f}'
 
-        return f'{a:.2f}*x + {b:.2f}*x**2 + {c:.2f}*x**3 + {d:.2f}*x**4 + {e:.2f}*x**5 + {f:.2f}*x**6 + {g:.2f}*x**7 + {h:.2f}'
+    def plot_analisys(self, name: str):
+        import matplotlib.pyplot as plt
+        # import mplcyberpunk
+        # plt.style.use("cyberpunk")
+        plt.scatter(self.df['Tempo'], self.df['Empuxo'],
+                    label='Pontos de Amostragem', color='#00ff41')
+        curve = self.get_curve()
+        xi = self.df['Tempo'].tolist()
+        y = [eval(curve) for t in xi]
+        plt.plot(xi, y, label='Curva de Empuxo', color='#08F7FE')
+        plt.xlabel('Tempo (s)')
+        plt.ylabel('Empuxo (N)')
+        plt.title('Empuxo do Motor')
+        plt.legend()
+        plt.savefig('CenterFlask/flaskr/archives/motor/' +
+                    name + '_grafico.png')
+
+    def save_analisys(self, name: str):
+        result = self.get_result()
+        result.to_csv('CenterFlask/flaskr/archives/motor/' + name + '_resultados.csv',
+                      sep=';', index=False)
+        self.df.to_csv('CenterFlask/flaskr/archives/motor/' +
+                       name + '_dados.csv', sep=';', index=False)
+        self.plot_analisys(name)
 
 
 class flight_analysis:
     def __init__(self, archive):
-        self.df = pd.read_csv(
-            archive, sep='\t', header=None).iloc[:, 0].str.split(';', expand=True)
-    
-    def get_data(self):
-        return self.df
-
-    # def get_trajectory(self):
-        # dados_result = {'Pressão':[], 'Altura':[], 'Altura GPS':[], 'Velocidade Intantânea':[], 'Aceleração Instantânea':[], 'Tempo de Voo':self.df[0]}                       }
-        # df_result = pd.DataFrame(dados_result)
-
-        # return df_result
-
-    def get_sensor_data(self):
-        dados_result = {'Pressão': self.df[1], 'Temperatura': self.df[4],
-                        'Altura': self.df[2], 'Tempo de Voo': self.df[0]}
-        df_result = pd.DataFrame(dados_result)
-
-        return df_result
-
-    def get_GPS(self):
-        dados_result = {'Latitude': self.df[1], 'Longitude': self.df[4],
-                        'Altura GPS': self.df[4], 'Tempo de Voo': self.df[0]}
-        df_result = pd.DataFrame(dados_result)
-
-        return df_result
+        self.df = pd.read_csv(archive, sep=';', names=[], header=None)
 
 
 if __name__ == '__main__':
     import easygui
     motor = motor_analisys(easygui.fileopenbox())
-    print(motor.get_result())
+    motor.save_analisys('teste1')
     # voo = flight_analysis(easygui.fileopenbox())
-    # print(voo.get_GPS())
