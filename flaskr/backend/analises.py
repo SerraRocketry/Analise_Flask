@@ -6,8 +6,11 @@ from scipy.optimize import curve_fit
 class motor_analisys:
     def __init__(self, archive):
         self.df = pd.read_csv(archive, sep=';')
-        self.df['Empuxo'] = self.df['Empuxo'].astype(float) * 9.81
-        self.df['Tempo'] = self.df['Tempo'].astype(float) / 1000
+        self.df['Empuxo'] = pd.to_numeric(self.df['Empuxo'], errors='coerce')
+        self.df['Tempo'] = pd.to_numeric(self.df['Tempo'], errors='coerce')
+        self.df['Tempo'] -= self.df['Tempo'].iloc[0]
+        self.df['Empuxo'] = round(self.df['Empuxo'] * 9.81, 4)
+        self.df['Tempo'] = round(self.df['Tempo'] / 1000, 4)
 
     def get_data(self):
         return self.df
@@ -22,14 +25,15 @@ class motor_analisys:
 
             for limit, designation in classes:
                 if total <= limit:
-                    return f"{designation}{medio:.1f} - {tempo:.1f}"
+                    return f"{designation}{medio:.1f}-{tempo:.1f}"
 
             return 'ERRO'
 
-        impulso = integrate.simpson(y=self.df['Empuxo'], x=self.df['Tempo'])
-        empuxo_max = max(self.df['Empuxo'])
-        empuxo_medio = (
-            1 / (self.df['Tempo'].iloc[-1] - self.df['Tempo'].iloc[0])) * impulso
+        impulso = round(integrate.simpson(
+            y=self.df['Empuxo'], x=self.df['Tempo']), 4)
+        empuxo_max = round(max(self.df['Empuxo']), 4)
+        empuxo_medio = round(
+            (1 / (self.df['Tempo'].iloc[-1] - self.df['Tempo'].iloc[0])) * impulso, 4)
         pontos_amostrais = len(self.df)
         duracao = self.df['Tempo'].iloc[-1] - self.df['Tempo'].iloc[0]
         classe_motor = classe(impulso, empuxo_medio, duracao)
@@ -61,17 +65,80 @@ class motor_analisys:
         # import mplcyberpunk
         # plt.style.use("cyberpunk")
         plt.scatter(self.df['Tempo'], self.df['Empuxo'],
-                    label='Pontos de Amostragem', color='#00ff41')
+                    label='Pontos de Amostragem', color='red')
         curve = self.get_curve()
         xi = self.df['Tempo'].tolist()
         y = [eval(curve) for t in xi]
-        plt.plot(xi, y, label='Curva de Empuxo', color='#08F7FE')
+        plt.plot(xi, y, label='Curva de Empuxo', color='black')
         plt.xlabel('Tempo (s)')
         plt.ylabel('Empuxo (N)')
-        plt.title('Empuxo do Motor')
+        plt.title('Empuxo do Motor - ' + name)
+        plt.grid()
         plt.legend()
         plt.savefig('CenterFlask/flaskr/archives/motor/' +
                     name + '_grafico.png')
+
+    def pdf(self, name: str):
+        from fpdf import FPDF
+
+        class PDF(FPDF):
+            def header(self):
+                # Logos
+                self.image(
+                    'CenterFlask/flaskr/static/assets/LOGO - ALTERNATIVA.png', 210-47, -5, 50)
+                self.image(
+                    'CenterFlask/flaskr/static/assets/logomarca-uerj-300x300.png', 2, 2, 35)
+
+                self.set_font('Arial', 'B', 25)
+                # Move to the right
+                self.cell(80)
+                # Title
+                self.cell(30, 25, 'Relatório de Teste Estático', 0, 0, 'C')
+                # Line break
+                self.ln(20)
+                self.set_fill_color(r=43, g=18, b=76)
+                self.set_y(45)
+                self.cell(0, 1, ' ', 0, 1, 'C', 1)
+
+            # Page footer
+            def footer(self):
+                # Position at 1.5 cm from bottom
+                self.set_y(-15)
+                # Arial italic 8
+                self.set_font('Arial', 'I', 8)
+                # Page number
+                self.cell(0, 10, 'Página ' + str(self.page_no()) +
+                          '/{nb}' + ' - Equipe Serra Rocketry', 0, 0, 'C')
+
+        # Instantiation of inherited class
+        pdf = PDF()
+        pdf.alias_nb_pages()
+        pdf.add_page()
+        pdf.set_xy(15, 50)
+        pdf.set_font('Courier', 'B', 20)
+        pdf.cell(0, 10, '{}'.format(name), 0, 0, 'C', 0)
+        pdf.set_xy(15, 60)
+        pdf.set_font('Courier', '', 16)
+        pdf.multi_cell(0, 10, 'Data do teste: {}'.format(self.df.at[0, 'Data']) +
+                       '\nHorário do teste: {}'.format(self.df.at[0, 'Hora']))
+
+        pdf.set_xy(15, 75)
+        pdf.set_font('Courier', '', 14)
+        pdf.multi_cell(0, 8, '\nImpulso Total (N*s) = {:.3f}'.format(self.df_result.at[0, 'Impulso']) +
+                       '\nEmpuxo Médio (N) = {:.3f}'.format(self.df_result.at[0, 'Empuxo medio (N)']) +
+                       '\nEmpuxo Máximo (N) = {:.3f}'.format(self.df_result.at[0, 'Empuxo max (N)']) +
+                       '\nTempo aproximado de queima (s)= {:.1f}'.format(self.df_result.at[0, 'Duração (s)']), 0, 1)
+
+        pdf.set_xy(105, 83)
+        pdf.set_font('Courier', '', 40)
+        pdf.cell(0, 10, '{}'.format(self.df_result.at[0, 'Classe']))
+
+        pdf.set_fill_color(r=43, g=18, b=76)
+        pdf.set_y(120)
+        pdf.cell(0, 1, ' ', 0, 1, 'C', 1)
+        pdf.image('CenterFlask/flaskr/archives/motor/' + name +
+                  '_grafico.png', (210/2)-90, 130, 180, 140)
+        pdf.output('CenterFlask/flaskr/archives/motor/' + name + '.pdf', 'F')
 
     def save_analisys(self, name: str):
         result = self.get_result()
@@ -80,6 +147,7 @@ class motor_analisys:
         self.df.to_csv('CenterFlask/flaskr/archives/motor/' +
                        name + '_dados.csv', sep=';', index=False)
         self.plot_analisys(name)
+        self.pdf(name)
 
 
 class flight_analysis:
@@ -90,5 +158,4 @@ class flight_analysis:
 if __name__ == '__main__':
     import easygui
     motor = motor_analisys(easygui.fileopenbox())
-    motor.save_analisys('teste1')
     # voo = flight_analysis(easygui.fileopenbox())

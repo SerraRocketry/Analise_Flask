@@ -1,9 +1,14 @@
 {% extends "base.html" %} {% block content %}
 <main>
   <div class="card", style="display: flex; flex-direction: column;">
-    {% for motor in motores %}
-      <h2>{{motor}}</h2>
-    {% endfor %}
+    <form action="/smotor" id="form_serial" method="post">
+      <label class="saved-label" for="savedmotors">Selecione a porta:</label>
+      <select name="savedmotors" id="savedmotors">
+        {% for motor in motores %}
+        <option value={{motor}}>{{motor}}</option>
+        {% endfor %}
+      </select>
+      <input type="submit" value="Abrir" id="show"/>
   </div>
 </main>
 {% endblock %}
