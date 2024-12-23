@@ -62,8 +62,6 @@ class motor_analisys:
 
     def plot_analisys(self, name: str):
         import matplotlib.pyplot as plt
-        # import mplcyberpunk
-        # plt.style.use("cyberpunk")
         plt.scatter(self.df['Tempo'], self.df['Empuxo'],
                     label='Pontos de Amostragem', color='red')
         curve = self.get_curve()
@@ -147,15 +145,4 @@ class motor_analisys:
         self.df.to_csv('CenterFlask/flaskr/archives/motor/' +
                        name + '_dados.csv', sep=';', index=False)
         self.plot_analisys(name)
-        self.pdf(name)
-
-
-class flight_analysis:
-    def __init__(self, archive):
-        self.df = pd.read_csv(archive, sep=';', names=[], header=None)
-
-
-if __name__ == '__main__':
-    import easygui
-    motor = motor_analisys(easygui.fileopenbox())
-    # voo = flight_analysis(easygui.fileopenbox())
+        # self.pdf(name)

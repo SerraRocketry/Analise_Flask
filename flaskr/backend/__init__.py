@@ -1,1 +1,1 @@
-from .analises import motor_analisys, flight_analysis
+from .analises import motor_analisys
