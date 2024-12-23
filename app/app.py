@@ -45,11 +45,6 @@ def internal_error(e):
 ######################### Rotas de análises #########################
 
 
-@app.route('/analise_voo')
-def analiseVoo():
-    return render_template('voo.html')
-
-
 @app.route('/analise_teste_estatico')
 def analiseTeste():
     return render_template('teste_estatico.html')
@@ -75,11 +70,6 @@ def save_motor():
 #####################################################################
 
 ######################### Rotas de galerias #########################
-
-
-# @app.route('/voosalvos')
-# def analiseVoo():
-#     return render_template('voo.html')
 
 
 @app.route('/motoressalvos')

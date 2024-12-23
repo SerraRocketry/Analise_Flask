@@ -67,3 +67,5 @@ A aplicação estará disponível em `http://127.0.0.1:5000` (endereço local) o
 2. Painel lateral ao invés de Navbar.
 3. Análise de Voo (`em desenvolvimento`).
 4. Nova paleta de cores.
+5. Dockerize.
+6. Novo estilo de PDF de análise.
