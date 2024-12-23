@@ -10,9 +10,10 @@ O Analise Flask é uma aplicação web simples desenvolvida com Flask. O objetiv
 
 - `app/`: Contém o código-fonte da aplicação Flask.
 - `app/app.py`: Aplicação Flask.
+- `app/archives/`: Arquivos salvos de análises.
+- `app/backend/`: Arquivos usados para auxílio das análises.
 - `app/static/`: Arquivos estáticos: CSS, JavaScript e imagens.
 - `app/templates/`: Templates HTML utilizados pela aplicação.
-- `app/archives/`: Arquivos salvos de análises.
 - `requiriments.txt`: Pacotes python necessários para rodar o programa.
 
 ## Instalação
