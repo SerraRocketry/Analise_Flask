@@ -145,4 +145,4 @@ class motor_analisys:
         self.df.to_csv('CenterFlask/flaskr/archives/motor/' +
                        name + '_dados.csv', sep=';', index=False)
         self.plot_analisys(name)
-        # self.pdf(name)
+        self.pdf(name)

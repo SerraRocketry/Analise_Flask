@@ -60,3 +60,10 @@ A aplicação estará disponível em `http://127.0.0.1:5000` (endereço local) o
 3. Commit suas mudanças (`git commit -am 'Adiciona nova feature'`).
 4. Faça push para a branch (`git push origin feature/nova-feature`).
 5. Abra um Pull Request.
+
+## Mudanças e Features planejadas
+
+1. Login de equipes (adicionando funcionalidades para cada).
+2. Painel lateral ao invés de Navbar.
+3. Análise de Voo (`em desenvolvimento`).
+4. Nova paleta de cores.
