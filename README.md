@@ -1,6 +1,6 @@
 # Análise Flask
 
-Este repositório contém o projeto de Análise de Dados e Visualização, desenvolvido pela equipe Serra Rocketry.
+Este repositório contém o projeto de Análise de Dados e Visualização, desenvolvido pela equipe Serra Rocketry e parceiros.
 
 ## Descrição
 
