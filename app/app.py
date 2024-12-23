@@ -33,13 +33,14 @@ def galeria():
 ######################### Rotas de erros #########################
 
 
-@app.errorhandler(404) 
-def not_found(e): 
-  return render_template("404.html") 
+@app.errorhandler(404)
+def not_found(e):
+    return render_template("404.html")
 
-@app.errorhandler(500) 
-def internal_error(e): 
-  return render_template("500.html") 
+
+@app.errorhandler(500)
+def internal_error(e):
+    return render_template("500.html")
 #####################################################################
 
 ######################### Rotas de análises #########################
@@ -56,7 +57,7 @@ def analiseTeste():
 @app.route('/motor_upload', methods=['POST'])
 def upload_motor():
     uploaded_file = request.files['file']
-    return process_motor_file(uploaded_file)
+    return process_motor_file(uploaded_file, False)
 
 
 @app.route('/save_motor', methods=['POST'])
@@ -74,7 +75,7 @@ def save_motor():
 
 @app.route('/motoressalvos')
 def show_motor():
-    path = r'CenterFlask/flaskr/archives/motor/'
+    path = r'Analise_Flask/app/archives/motor'
     all_files = glob.glob(os.path.join(path, "*_dados.csv"))
     return render_template('motores.html', motores=all_files)
 
@@ -82,14 +83,12 @@ def show_motor():
 @app.route('/smotor', methods=['POST'])
 def upload_motor_galery():
     uploaded_file = request.form.get('savedmotors')
-    return process_motor_file(uploaded_file)
+    return process_motor_file(uploaded_file, True)
 
 
-def process_motor_file(uploaded_file):
-    # global filename
-    # filename = '_' + os.path.splitext(uploaded_file.filename)[0]
+def process_motor_file(uploaded_file, saved):
     global motor
-    motor = motor_analisys(uploaded_file)
+    motor = motor_analisys(uploaded_file, saved)
     data = motor.get_data()
     result = motor.get_result()
     temp = result.to_dict('records')

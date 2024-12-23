@@ -4,13 +4,18 @@ from scipy.optimize import curve_fit
 
 
 class motor_analisys:
-    def __init__(self, archive):
-        self.df = pd.read_csv(archive, sep=';')
-        self.df['Empuxo'] = pd.to_numeric(self.df['Empuxo'], errors='coerce')
-        self.df['Tempo'] = pd.to_numeric(self.df['Tempo'], errors='coerce')
-        self.df['Tempo'] -= self.df['Tempo'].iloc[0]
-        self.df['Empuxo'] = round(self.df['Empuxo'] * 9.81, 4)
-        self.df['Tempo'] = round(self.df['Tempo'] / 1000, 4)
+    def __init__(self, archive, saved):
+        if saved:
+            self.df = pd.read_csv(archive, sep=';')
+            self.df['Empuxo'] = pd.to_numeric(self.df['Empuxo'], errors='coerce')
+            self.df['Tempo'] = pd.to_numeric(self.df['Tempo'], errors='coerce')
+        else:
+            self.df = pd.read_csv(archive, sep=';')
+            self.df['Empuxo'] = pd.to_numeric(self.df['Empuxo'], errors='coerce')
+            self.df['Tempo'] = pd.to_numeric(self.df['Tempo'], errors='coerce')
+            self.df['Tempo'] -= self.df['Tempo'].iloc[0]
+            self.df['Empuxo'] = round(self.df['Empuxo'] * 9.81, 4)
+            self.df['Tempo'] = round(self.df['Tempo'] / 1000, 4)
 
     def get_data(self):
         return self.df

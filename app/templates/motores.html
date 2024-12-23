@@ -2,7 +2,7 @@
 <main>
   <div class="card", style="display: flex; flex-direction: column;">
     <form action="/smotor" id="form_serial" method="post">
-      <label class="saved-label" for="savedmotors">Selecione a porta:</label>
+      <label class="saved-label" for="savedmotors">Selecione o motor:</label>
       <select name="savedmotors" id="savedmotors">
         {% for motor in motores %}
         <option value={{motor}}>{{motor}}</option>
