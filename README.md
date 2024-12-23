@@ -20,7 +20,7 @@ O Analise Flask é uma aplicação web simples desenvolvida com Flask. O objetiv
 
 1. Clone o repositório:
    ```bash
-   git clone 
+   git clone https://github.com/SerraRocketry/Analise_Flask.git
    ```
 2. Navegue até o diretório do projeto:
    ```bash
