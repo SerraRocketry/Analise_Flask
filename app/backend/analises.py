@@ -92,9 +92,9 @@ class motor_analisys:
             def header(self):
                 # Logos
                 self.image(
-                    'CenterFlask/flaskr/static/assets/LOGO - ALTERNATIVA.png', 210-47, -5, 50)
+                    'Analise_Flask/app/static/assets/LOGO - ALTERNATIVA.png', 210-47, -5, 50)
                 self.image(
-                    'CenterFlask/flaskr/static/assets/logomarca-uerj-300x300.png', 2, 2, 35)
+                    'Analise_Flask/app/static/assets/logomarca-uerj-300x300.png', 2, 2, 35)
 
                 self.set_font('Arial', 'B', 25)
                 # Move to the right
@@ -154,4 +154,4 @@ class motor_analisys:
         self.df.to_csv('Analise_Flask/app/archives/motor/' +
                        name + '_dados.csv', sep=';', index=False)
         self.plot_analisys(name)
-        # self.pdf(name)
+        self.pdf(name)
