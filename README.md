@@ -4,7 +4,7 @@ Este repositório contém o projeto de Análise de Dados e Visualização, desen
 
 ## Descrição
 
-O Analise Flask é uma aplicação web desenvolvida com Flask. O objetivo do projeto é fornecer uma interface para gerenciar e visualizar dados relacionados aos projetos de Foguetemodelismo.
+O Analise Flask é uma aplicação web simples desenvolvida com Flask. O objetivo do projeto é fornecer uma interface para gerenciar e visualizar dados relacionados aos projetos de Foguetemodelismo.
 
 ## Estrutura do Projeto
 
