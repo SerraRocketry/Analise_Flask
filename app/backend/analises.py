@@ -1,5 +1,6 @@
 import pandas as pd
 from scipy import integrate
+from scipy.interpolate import CubicSpline
 from scipy.optimize import curve_fit
 
 
@@ -7,8 +8,6 @@ class motor_analisys:
     def __init__(self, archive, saved):
         if saved:
             self.df = pd.read_csv(archive, sep=';')
-            self.df['Empuxo'] = pd.to_numeric(self.df['Empuxo'], errors='coerce')
-            self.df['Tempo'] = pd.to_numeric(self.df['Tempo'], errors='coerce')
         else:
             self.df = pd.read_csv(archive, sep=';')
             self.df['Empuxo'] = pd.to_numeric(self.df['Empuxo'], errors='coerce')
@@ -65,20 +64,25 @@ class motor_analisys:
         a, b, c, d, e, f = popt
         return f'({a} * t) + ({b} * t**2) + ({c} * t**3) + ({d} * t**4) + ({e} * t**5) + {f}'
 
+    def spline(self):
+        x = self.df['Tempo'].tolist()
+        y = self.df['Empuxo'].tolist()
+        curve = CubicSpline(x, y)
+        return curve
+    
     def plot_analisys(self, name: str):
         import matplotlib.pyplot as plt
         plt.scatter(self.df['Tempo'], self.df['Empuxo'],
                     label='Pontos de Amostragem', color='red')
-        curve = self.get_curve()
+        curve = self.spline()
         xi = self.df['Tempo'].tolist()
-        y = [eval(curve) for t in xi]
-        plt.plot(xi, y, label='Curva de Empuxo', color='black')
+        plt.plot(xi, curve(xi), label='Curva de Empuxo', color='black')
         plt.xlabel('Tempo (s)')
         plt.ylabel('Empuxo (N)')
         plt.title('Empuxo do Motor - ' + name)
         plt.grid()
         plt.legend()
-        plt.savefig('CenterFlask/flaskr/archives/motor/' +
+        plt.savefig('Analise_Flask/app/archives/motor/' +
                     name + '_grafico.png')
 
     def pdf(self, name: str):
@@ -139,15 +143,15 @@ class motor_analisys:
         pdf.set_fill_color(r=43, g=18, b=76)
         pdf.set_y(120)
         pdf.cell(0, 1, ' ', 0, 1, 'C', 1)
-        pdf.image('CenterFlask/flaskr/archives/motor/' + name +
+        pdf.image('Analise_Flask/app/archives/motor/' + name +
                   '_grafico.png', (210/2)-90, 130, 180, 140)
-        pdf.output('CenterFlask/flaskr/archives/motor/' + name + '.pdf', 'F')
+        pdf.output('Analise_Flask/app/archives/motor/' + name + '.pdf', 'F')
 
     def save_analisys(self, name: str):
         result = self.get_result()
-        result.to_csv('CenterFlask/flaskr/archives/motor/' + name + '_resultados.csv',
+        result.to_csv('Analise_Flask/app/archives/motor/' + name + '_resultados.csv',
                       sep=';', index=False)
-        self.df.to_csv('CenterFlask/flaskr/archives/motor/' +
+        self.df.to_csv('Analise_Flask/app/archives/motor/' +
                        name + '_dados.csv', sep=';', index=False)
         self.plot_analisys(name)
-        self.pdf(name)
+        # self.pdf(name)
