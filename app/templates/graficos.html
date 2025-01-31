@@ -1,35 +1,60 @@
 {% extends "base.html" %} {% block content %}
-<main>
+<div class="container">
   <div class="analisys">
-    <div class="graph_card">
+    <div class="graph_card card">
       <canvas id="myChart"></canvas>
     </div>
     <script>
       const chartLabels = {{x}};
-  
+
       const data = {
           labels: chartLabels,
           datasets: [{
-              label: 'Empuxo (N)',
-              backgroundColor: '#696cff',
-              borderColor: '#696cff',
+              label: 'Empuxo do Motor',
+              backgroundColor: '#002196',
+              borderColor: '#002196',
               data: {{y}}
           }]
       };
-  
+
       const config = {
           type: 'line',
           data: data,
-          options: { maintainAspectRatio: false }
+          options: { maintainAspectRatio:false,
+            scales: {
+                x: {
+                  ticks: {
+                    color: '#000423'
+                  },
+                  title: {
+                    display: true,
+                    align: 'center',
+                    text: 'Tempo de Operação [s]',
+                    color: '#000423'
+                  }
+                },
+                y: {
+                  ticks: {
+                    color: '#000423'
+                  },
+                  title: {
+                    display: true,
+                    align: 'center',
+                    text: 'Empuxo [N]',
+                    color: '#000423'
+                  }
+                }
+              }
+            }
       };
-  
+
       const myChart = new Chart(
           document.getElementById('myChart'),
           config
       );
     </script>
-    <div style="height: 50vh;">
-      <div class="card" , id="table", style="height: 70%">
+    <div class="info_card">
+      <div class="card" id="table" , style="height: 70%">
         <table>
           <thead>
             <tr>
@@ -47,8 +72,8 @@
           </tbody>
         </table>
       </div>
-      <div class="card" , id="save_btn" style="height: 30%">
-        <h2 style="padding: 2%;">Salvar análise</h2>
+      <div class="card save" style="height: 30%">
+        <h2>Salvar análise</h2>
         <form action="/save_motor" method="POST">
           <label for="name">Informe o nome do motor:</label>
           <input type="text" name="name" id="name" />
@@ -57,5 +82,5 @@
       </div>
     </div>
   </div>
-</main>
+</div>
 {% endblock %}

@@ -1,11 +1,13 @@
 {% extends "base.html" %} {% block content %}
-<main>
+<div class="container">
   <div class="card">
     <a href="/analise_teste_estatico"
       ><button>Análise de Teste Estático</button></a
     >
     <a href="/analise_voo"><button>Análise de Voo</button></a>
   </div>
-  <div class="confirm card", style="display: {{displayopt}};"><h2>{{msg}}</h2></div>
-</main>
+  <div class="confirm card" , style="display: {{displayopt}};">
+    <h2>{{msg}}</h2>
+  </div>
+</div>
 {% endblock %}

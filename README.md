@@ -64,8 +64,8 @@ A aplicação estará disponível em `http://127.0.0.1:5000` (endereço local) o
 ## Mudanças e Features planejadas
 
 1. Login de equipes (adicionando funcionalidades para cada).
-2. Painel lateral ao invés de Navbar.
+2. Página de tratamento de dados para análise.
 3. Análise de Voo (`em desenvolvimento`).
-4. Nova paleta de cores.
+4. Estimativa de trajetória.
 5. Dockerize.
 6. Novo estilo de PDF de análise.
