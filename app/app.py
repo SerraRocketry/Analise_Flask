@@ -26,9 +26,9 @@ def analise():
     return render_template('analises.html', displayopt='none')
 
 
-@app.route('/galeria')
+@app.route('/tratamento')
 def galeria():
-    return render_template('galeria.html')
+    return render_template('tratamento.html')
 
 ######################### Rotas de erros #########################
 
@@ -70,20 +70,11 @@ def save_motor():
     return render_template('analises.html', msg='Análise salva com sucesso!', displayopt='block')
 #####################################################################
 
-######################### Rotas de galerias #########################
+######################### Rota de Tratamento de Dados #########################
 
-
-@app.route('/motoressalvos')
-def show_motor():
-    path = r'Analise_Flask/app/archives/motor'
-    all_files = glob.glob(os.path.join(path, "*_dados.csv"))
-    return render_template('motores.html', motores=all_files)
-
-
-@app.route('/smotor', methods=['POST'])
-def upload_motor_galery():
-    uploaded_file = request.form.get('savedmotors')
-    return process_motor_file(uploaded_file, True)
+@app.route('/tratamento', methods=['POST'])
+def tratamento():
+    return render_template('tratamento.html')
 
 
 def process_motor_file(uploaded_file, saved):
