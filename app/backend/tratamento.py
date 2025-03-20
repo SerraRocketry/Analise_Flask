@@ -1,7 +1,6 @@
 import pandas as pd
-import easygui
 
-class DataTreatment:
+class data_treatment:
     def __init__(self, archive, team, objective):
         self.data = None
         if objective == 'static':
@@ -52,8 +51,3 @@ class DataTreatment:
     def static_save(self, name):
         self.data_cleaned.to_csv(name, sep=';', index=False)
         return 'Dados salvos com sucesso!'
-
-if __name__ == '__main__':
-    dt = DataTreatment(easygui.fileopenbox(), 'Serra Rocketry', 'static')
-    print(dt.static_data_info())
-    print(dt.static_filter(dt.static_data_info()['mean']))
