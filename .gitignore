@@ -171,4 +171,4 @@ cython_debug/
 .pypirc
 
 # Pastas específicas
-motor
+__pycache__/

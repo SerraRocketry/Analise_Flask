@@ -1,10 +1,14 @@
 {% extends "base.html" %} {% block content %}
 <div class="container">
   <div class="card">
-    <a href="/analise_teste_estatico"
-      ><button>Análise de Teste Estático</button></a
-    >
-    <a href="/analise_voo"><button>Análise de Voo</button></a>
+    <h2>Página de análises.</h2>
+  </div>
+  <div class="card">
+    <form method="POST" action="/motor_upload" enctype="multipart/form-data">
+      <label class="upload-label" for="file">Enviar arquivo</label>
+      <input type="file" name="file" id="file" accept=".txt,.csv" />
+      <input type="submit" value="Upload" />
+    </form>
   </div>
   <div class="confirm card" , style="display: {{displayopt}};">
     <h2>{{msg}}</h2>

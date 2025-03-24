@@ -3,18 +3,14 @@ from scipy import integrate
 from scipy.interpolate import CubicSpline
 from scipy.optimize import curve_fit
 
-
 class motor_analisys:
-    def __init__(self, archive, saved):
-        if saved:
-            self.df = pd.read_csv(archive, sep=';')
-        else:
-            self.df = pd.read_csv(archive, sep=';')
-            self.df['Empuxo'] = pd.to_numeric(self.df['Empuxo'], errors='coerce')
-            self.df['Tempo'] = pd.to_numeric(self.df['Tempo'], errors='coerce')
-            self.df['Tempo'] -= self.df['Tempo'].iloc[0]
-            self.df['Empuxo'] = round(self.df['Empuxo'] * 9.81, 4)
-            self.df['Tempo'] = round(self.df['Tempo'] / 1000, 4)
+    def __init__(self, archive):
+        self.df = pd.read_csv(archive, sep=';')
+        self.df['Empuxo'] = pd.to_numeric(self.df['Empuxo'], errors='coerce')
+        self.df['Tempo'] = pd.to_numeric(self.df['Tempo'], errors='coerce')
+        self.df['Tempo'] -= self.df['Tempo'].iloc[0]
+        self.df['Empuxo'] = round(self.df['Empuxo'] * 9.81, 4)
+        self.df['Tempo'] = round(self.df['Tempo'] / 100, 4)
 
     def get_data(self):
         return self.df
@@ -43,14 +39,14 @@ class motor_analisys:
         classe_motor = classe(impulso, empuxo_medio, duracao)
 
         dados_result = {
-            'Impulso [N*s]': [impulso],
-            'Empuxo max [N]': [empuxo_max],
-            'Empuxo medio [N]': [empuxo_medio],
-            'Pontos amostrais': [pontos_amostrais],
-            'Duração [s]': [duracao],
-            'Classe': [classe_motor]
+            'Impulso [N*s]': impulso,
+            'Empuxo max [N]': empuxo_max,
+            'Empuxo medio [N]': empuxo_medio,
+            'Pontos amostrais': pontos_amostrais,
+            'Duração [s]': duracao,
+            'Classe': classe_motor
         }
-        self.df_result = pd.DataFrame(dados_result)
+        self.df_result = dados_result
 
         return self.df_result
 
@@ -72,7 +68,7 @@ class motor_analisys:
         plt.title('Empuxo do Motor - ' + name)
         plt.grid()
         plt.legend()
-        plt.savefig('Analise_Flask/app/archives/motor/' +
+        plt.savefig('Analise_Flask/app/data/motor_result/' +
                     name + '_grafico.png')
 
     def pdf(self, name: str):
@@ -121,27 +117,27 @@ class motor_analisys:
 
         pdf.set_xy(15, 75)
         pdf.set_font('Courier', '', 14)
-        pdf.multi_cell(0, 8, '\nImpulso Total [N*s] = {:.3f}'.format(self.df_result.at[0, 'Impulso [N*s]']) +
-                       '\nEmpuxo Médio [N] = {:.3f}'.format(self.df_result.at[0, 'Empuxo medio [N]']) +
-                       '\nEmpuxo Máximo [N] = {:.3f}'.format(self.df_result.at[0, 'Empuxo max [N]']) +
-                       '\nTempo aproximado de queima [s]= {:.1f}'.format(self.df_result.at[0, 'Duração [s]']), 0, 1)
+        pdf.multi_cell(0, 8, '\nImpulso Total [N*s] = {:.3f}'.format(self.df_result['Impulso [N*s]']) +
+                       '\nEmpuxo Médio [N] = {:.3f}'.format(self.df_result['Empuxo medio [N]']) +
+                       '\nEmpuxo Máximo [N] = {:.3f}'.format(self.df_result['Empuxo max [N]']) +
+                       '\nTempo aproximado de queima [s]= {:.1f}'.format(self.df_result['Duração [s]']), 0, 1)
 
         pdf.set_xy(105, 83)
         pdf.set_font('Courier', '', 40)
-        pdf.cell(0, 10, '{}'.format(self.df_result.at[0, 'Classe']))
+        pdf.cell(0, 10, '{}'.format(self.df_result['Classe']))
 
         pdf.set_fill_color(r=43, g=18, b=76)
         pdf.set_y(120)
         pdf.cell(0, 1, ' ', 0, 1, 'C', 1)
-        pdf.image('Analise_Flask/app/archives/motor/' + name +
+        pdf.image('Analise_Flask/app/data/motor_result/' + name +
                   '_grafico.png', (210/2)-90, 130, 180, 140)
-        pdf.output('Analise_Flask/app/archives/motor/' + name + '.pdf', 'F')
+        pdf.output('Analise_Flask/app/data/motor_result/' + name + '.pdf', 'F')
 
     def save_analisys(self, name: str):
         result = self.get_result()
-        result.to_csv('Analise_Flask/app/archives/motor/' + name + '_resultados.csv',
+        pd.DataFrame([result]).to_csv('Analise_Flask/app/data/motor_result/' + name + '_resultados.csv',
                       sep=';', index=False)
-        self.df.to_csv('Analise_Flask/app/archives/motor/' +
+        self.df.to_csv('Analise_Flask/app/data/motor_result/' +
                        name + '_dados.csv', sep=';', index=False)
         self.plot_analisys(name)
         self.pdf(name)

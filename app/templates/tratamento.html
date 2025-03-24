@@ -3,5 +3,15 @@
   <div class="card">
     <h2>Página de tratamento de dados.</h2>
   </div>
+  <div class="card">
+    <form method="POST" action="/data_upload" enctype="multipart/form-data">
+      <label class="upload-label" for="file">Enviar arquivo</label>
+      <input type="file" name="file" id="file" accept=".txt,.csv" />
+      <input type="submit" value="Upload" />
+    </form>
+  </div>
+  <div class="confirm card" , style="display: {{displayopt}};">
+    <h2>{{msg}}</h2>
+  </div>
 </div>
 {% endblock %}

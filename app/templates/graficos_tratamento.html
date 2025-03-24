@@ -63,20 +63,19 @@
             </tr>
           </thead>
           <tbody>
-            {% for record in records %} {% for col in colnames %}
+            {% for key, value in result.items() %}
             <tr>
-              <td class="t_info val">{{ col }}</td>
-              <td class="t_value val">{{ record[col] }}</td>
+              <td class="t_info val">{{ key }}</td>
+              <td class="t_value val">{{ value }}</td>
             </tr>
-            {% endfor %} {% endfor %}
+            {% endfor %}
           </tbody>
         </table>
       </div>
       <div class="card save" style="height: 30%">
-        <h2>Salvar análise</h2>
-        <form action="/save_motor" method="POST">
-          <label for="name">Informe o nome do motor:</label>
-          <input type="text" name="name" id="name" />
+        <h2>Salvar dados</h2>
+        <form action="/save_treatment" method="POST">
+          <label for="name">Salvar o arquivo processado?</label>
           <input type="submit" value="Salvar" />
         </form>
       </div>

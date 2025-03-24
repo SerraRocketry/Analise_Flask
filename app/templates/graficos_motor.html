@@ -1,0 +1,86 @@
+{% extends "base.html" %} {% block content %}
+<div class="container">
+  <div class="analisys">
+    <div class="graph_card card">
+      <canvas id="myChart"></canvas>
+    </div>
+    <script>
+      const chartLabels = {{x}};
+
+      const data = {
+          labels: chartLabels,
+          datasets: [{
+              label: 'Empuxo do Motor',
+              backgroundColor: '#002196',
+              borderColor: '#002196',
+              data: {{y}}
+          }]
+      };
+
+      const config = {
+          type: 'line',
+          data: data,
+          options: { maintainAspectRatio:false,
+            scales: {
+                x: {
+                  ticks: {
+                    color: '#000423'
+                  },
+                  title: {
+                    display: true,
+                    align: 'center',
+                    text: 'Tempo de Operação [s]',
+                    color: '#000423'
+                  }
+                },
+                y: {
+                  ticks: {
+                    color: '#000423'
+                  },
+                  title: {
+                    display: true,
+                    align: 'center',
+                    text: 'Empuxo [N]',
+                    color: '#000423'
+                  }
+                }
+              }
+            }
+      };
+
+      const myChart = new Chart(
+          document.getElementById('myChart'),
+          config
+      );
+    </script>
+    <div class="info_card">
+      <div class="card" id="table" , style="height: 70%">
+        <table>
+          <thead>
+            <tr>
+              <th class="t_info"><h2>Informação</h2></th>
+              <th class="t_value"><h2>Valor</h2></th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for key, value in result.items() %}
+            <tr>
+              <td class="t_info val">{{ key }}</td>
+              <td class="t_value val">{{ value }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      <div class="card save" style="height: 30%">
+        <h2>Salvar análise</h2>
+        <form action="/save_motor" method="POST">
+          <label for="name">Informe o nome do motor:</label>
+          <input type="text" name="name" id="name" />
+          <input type="submit" value="Salvar" />
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
