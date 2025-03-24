@@ -1,6 +1,6 @@
 # Análise Flask
 
-Este repositório contém o projeto de Análise de Dados e Visualização, desenvolvido pela equipe Serra Rocketry e parceiros.
+Este repositório contém o projeto de Análise de Dados e Visualização, desenvolvido pela equipe Serra Rocketry.
 
 ## Descrição
 
@@ -10,7 +10,7 @@ O Analise Flask é uma aplicação web simples desenvolvida com Flask. O objetiv
 
 - `app/`: Contém o código-fonte da aplicação Flask.
 - `app/app.py`: Aplicação Flask.
-- `app/archives/`: Arquivos salvos de análises.
+- `app/data/`: Arquivos salvos de análises.
 - `app/backend/`: Arquivos usados para auxílio das análises.
 - `app/static/`: Arquivos estáticos: CSS, JavaScript e imagens.
 - `app/templates/`: Templates HTML utilizados pela aplicação.
@@ -64,9 +64,7 @@ A aplicação estará disponível em `http://127.0.0.1:5000` (endereço local) o
 
 ## Mudanças e Features planejadas
 
-1. Login de equipes (adicionando funcionalidades para cada).
-2. Página de tratamento de dados para análise.
-3. Análise de Voo (`em desenvolvimento`).
-4. Estimativa de trajetória.
-5. Dockerize.
-6. Novo estilo de PDF de análise.
+1. Análise de Voo (`em desenvolvimento`).
+2. Estimativa de trajetória.
+3. Dockerize.
+4. Novo estilo de PDF de análise.
