@@ -87,7 +87,7 @@ def process_motor_file(uploaded_file):
 
 
 def process_data_file(uploaded_file):
-    global data 
+    global data
     data = data_treatment(uploaded_file)
     data_raw = data.get_data()
     table_info = data_raw['Empuxo'].describe().to_dict()
@@ -95,7 +95,6 @@ def process_data_file(uploaded_file):
     data_filtered = data.data_filter(threshold)
     global file
     file = uploaded_file.filename
-
     return render_template("graficos_tratamento.html", x=data_filtered['Tempo'].to_list(), y=data_filtered['Empuxo'].to_list(), result=table_info)
 
 
