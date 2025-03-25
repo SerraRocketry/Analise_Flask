@@ -1,60 +1,16 @@
-{% extends "base.html" %} {% block content %}
+{% extends "base.html" %} 
+{% block content %}
+<link href="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.min.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/noUiSlider/15.5.0/nouislider.min.js"></script>
+
 <div class="container">
   <div class="analisys">
     <div class="graph_card card">
       <canvas id="myChart"></canvas>
     </div>
-    <script>
-      const chartLabels = {{x}};
 
-      const data = {
-          labels: chartLabels,
-          datasets: [{
-              label: 'Empuxo do Motor',
-              backgroundColor: '#002196',
-              borderColor: '#002196',
-              data: {{y}}
-          }]
-      };
-
-      const config = {
-          type: 'line',
-          data: data,
-          options: { maintainAspectRatio:false,
-            scales: {
-                x: {
-                  ticks: {
-                    color: '#000423'
-                  },
-                  title: {
-                    display: true,
-                    align: 'center',
-                    text: 'Tempo de Operação [s]',
-                    color: '#000423'
-                  }
-                },
-                y: {
-                  ticks: {
-                    color: '#000423'
-                  },
-                  title: {
-                    display: true,
-                    align: 'center',
-                    text: 'Empuxo [N]',
-                    color: '#000423'
-                  }
-                }
-              }
-            }
-      };
-
-      const myChart = new Chart(
-          document.getElementById('myChart'),
-          config
-      );
-    </script>
     <div class="info_card">
-      <div class="card" id="table" , style="height: 70%">
+      <div class="card" id="table" style="height: 70%">
         <table>
           <thead>
             <tr>
@@ -72,6 +28,16 @@
           </tbody>
         </table>
       </div>
+
+      <div class="card">
+        <div class="rangeslider">
+          <div id="thresholdSlider"></div>
+          <p>Threshold: <span id="thresholdValue">{{threshold}}</span></p>
+          <div id="intervalSlider"></div>
+          <p>Intervalo: <span id="intervalValue">{{tmin}} - {{tmax}}</span></p>
+        </div>
+      </div>
+
       <div class="card save" style="height: 30%">
         <h2>Salvar dados</h2>
         <form action="/save_treatment" method="POST">
@@ -82,4 +48,108 @@
     </div>
   </div>
 </div>
+
+<script>
+  const chartLabels = "{{x}}".split(",");
+  const data = {
+    labels: chartLabels,
+    datasets: [{
+      label: 'Empuxo do Motor',
+      backgroundColor: '#002196',
+      borderColor: '#002196',
+      data: "{{y}}".split(",")
+    }]
+  };
+
+  const config = {
+    type: 'line',
+    data: data,
+    options: {
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          ticks: { color: '#000423' },
+          title: {
+            display: true,
+            align: 'center',
+            text: 'Tempo de Operação [s]',
+            color: '#000423'
+          }
+        },
+        y: {
+          ticks: { color: '#000423' },
+          title: {
+            display: true,
+            align: 'center',
+            text: 'Empuxo [N]',
+            color: '#000423'
+          }
+        }
+      }
+    }
+  };
+
+  const myChart = new Chart(document.getElementById('myChart'), config);
+
+  const thresholdSlider = document.getElementById('thresholdSlider');
+  const thresholdValue = document.getElementById('thresholdValue');
+  const intervalSlider = document.getElementById('intervalSlider');
+  const intervalValue = document.getElementById('intervalValue');
+
+  noUiSlider.create(thresholdSlider, {
+    start: [{{threshold}}],
+    connect: true,
+    step: 0.01,
+    range: { min: {{fmin}}, max: {{fmax}} }
+  });
+
+  thresholdSlider.noUiSlider.on('change', function (values, handle) {
+    thresholdValue.innerHTML = values[handle];
+    updateFilters();
+  });
+
+  noUiSlider.create(intervalSlider, {
+    start: [{{tmin}}, {{tmax}}],
+    connect: true,
+    step: 10,
+    range: { min: {{tmin}}, max: {{tmax}} }
+  });
+
+  intervalSlider.noUiSlider.on('change', function (values, handle) {
+    intervalValue.innerHTML = values.join(' - ');
+    updateFilters();
+  });
+
+  function updateFilters() {
+    const threshold = thresholdSlider.noUiSlider.get();
+    const interval = intervalSlider.noUiSlider.get();
+
+    fetch('/update_filters', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: `threshold=${threshold}&tmin=${interval[0]}&tmax=${interval[1]}`
+    })
+    .then(response => response.json())
+    .then(data => {
+      myChart.data.labels = data.x;
+      myChart.data.datasets[0].data = data.y;
+      myChart.update();
+
+      const tableBody = document.querySelector('tbody');
+      tableBody.innerHTML = '';
+      for (const [key, value] of Object.entries(data.result)) {
+        const row = document.createElement('tr');
+        const keyCell = document.createElement('td');
+        keyCell.className = 't_info val';
+        keyCell.textContent = key;
+        const valueCell = document.createElement('td');
+        valueCell.className = 't_value val';
+        valueCell.textContent = value;
+        row.appendChild(keyCell);
+        row.appendChild(valueCell);
+        tableBody.appendChild(row);
+      }
+    });
+  }
+</script>
 {% endblock %}

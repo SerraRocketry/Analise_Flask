@@ -122,6 +122,13 @@ form {
   flex-direction: row;
 }
 
+.drop-area {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
 #drop-area {
   border: 2px dashed var(--primary-bg);
   border-radius: 8px;
@@ -129,6 +136,7 @@ form {
   text-align: center;
   cursor: pointer;
   transition: border-color 0.4s;
+  margin: 10px;
 }
 
 #drop-area:hover {
@@ -136,7 +144,7 @@ form {
 }
 
 #drop-area.dragover {
-  border-color: var(--hover-bg);
+  border-color: var(--success);
 }
 
 .logo-div {
@@ -213,6 +221,44 @@ form {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+.rangeslider {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+
+#thresholdSlider, #intervalSlider {
+  width: 90%;
+  margin: 10px;
+}
+
+#thresholdSlider .noUi-connect {
+  background: var(--hover-bg);
+}
+
+#intervalSlider .noUi-connect {
+  background: var(--hover-bg);
+}
+
+#thresholdSlider .noUi-handle {
+  background: var(--primary-bg);
+  box-shadow: none;
+}
+
+#intervalSlider .noUi-handle {
+  background: var(--primary-bg);
+  box-shadow: none;
+}
+
+#intervalSlider .noUi-handle-lower {
+  right: 0;
+}
+#intervalSlider .noUi-handle-upper {
+  right: -34px;
 }
 
 @media screen and (max-width: 1500px) {

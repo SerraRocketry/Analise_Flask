@@ -1,7 +1,7 @@
 from backend import motor_analisys, data_treatment
 
 import webbrowser
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, jsonify
 
 app = Flask(__name__)
 
@@ -90,16 +90,35 @@ def process_data_file(uploaded_file):
     global data
     data = data_treatment(uploaded_file)
     data_raw = data.get_data()
+    time_slider_min = data_raw['Tempo'].min()
+    time_slider_max = data_raw['Tempo'].max()
+    force_slider_min = data_raw['Empuxo'].min()
+    force_slider_max = data_raw['Empuxo'].max()
     table_info = data_raw['Empuxo'].describe().to_dict()
-    threshold = data_raw['Empuxo'].mean()
-    data_filtered = data.data_filter(threshold)
+    threshold = round(data_raw['Empuxo'].mean(),3)
+    data_filtered = data.data_filter(threshold, [time_slider_min, time_slider_max])
     global file
     file = uploaded_file.filename
-    return render_template("graficos_tratamento.html", x=data_filtered['Tempo'].to_list(), y=data_filtered['Empuxo'].to_list(), result=table_info)
+    return render_template("graficos_tratamento.html", x=data_filtered['Tempo'].to_list(), y=data_filtered['Empuxo'].to_list(), result=table_info, fmin=force_slider_min, fmax=force_slider_max, threshold=threshold, tmin=time_slider_min, tmax=time_slider_max)
 
 
 def open_browser(port):
     webbrowser.open_new(f"http://localhost:{port}/")
+
+
+@app.route('/update_filters', methods=['POST'])
+def update_filters():
+    global data
+    threshold = float(request.form['threshold'])
+    tmin = float(request.form['tmin'])
+    tmax = float(request.form['tmax'])
+    data_filtered = data.data_filter(threshold, [tmin, tmax])
+    table_info = data_filtered['Empuxo'].describe().to_dict()
+    return jsonify({
+        'x': data_filtered['Tempo'].to_list(),
+        'y': data_filtered['Empuxo'].to_list(),
+        'result': table_info
+    })
 
 
 if __name__ == '__main__':
