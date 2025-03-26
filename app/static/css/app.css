@@ -268,7 +268,13 @@ form {
   }
 
   .sidebar a {
-    float: left;
+    float: center;
+  }
+
+  .menu-list {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
   }
 
   .graph_card {
@@ -296,5 +302,9 @@ form {
   .sidebar a {
     text-align: center;
     float: none;
+  }
+
+  .menu-list {
+    flex-direction: column;
   }
 }
