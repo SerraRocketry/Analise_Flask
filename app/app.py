@@ -105,6 +105,7 @@ def process_data_file(uploaded_file):
 def open_browser(port):
     webbrowser.open_new(f"http://localhost:{port}/")
 
+<<<<<<< Updated upstream
 
 @app.route('/update_filters', methods=['POST'])
 def update_filters():
@@ -122,6 +123,13 @@ def update_filters():
 
 
 if __name__ == '__main__':
+    
+    host = '0.0.0.0'
     port = 5000
+    extra_files = [ f"./templates/{i}" for i in os.listdir("./templates") ] 
+
     open_browser(port)
-    app.run(host='0.0.0.0', port=port)
+
+    app.run(host=host, port=port, debug=True, extra_files=extra_files)
+
+    # flask run --debug --extra-files templates/base.html
