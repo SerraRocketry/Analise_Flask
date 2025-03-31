@@ -1,4 +1,7 @@
+
+
 from backend import motor_analisys, data_treatment
+import os
 
 import webbrowser
 from flask import Flask, render_template, request, jsonify
@@ -105,8 +108,6 @@ def process_data_file(uploaded_file):
 def open_browser(port):
     webbrowser.open_new(f"http://localhost:{port}/")
 
-<<<<<<< Updated upstream
-
 @app.route('/update_filters', methods=['POST'])
 def update_filters():
     global data
@@ -124,12 +125,32 @@ def update_filters():
 
 if __name__ == '__main__':
     
-    host = '0.0.0.0'
+    host = '0.0.0.0' # aberto para todos os IPs
     port = 5000
-    extra_files = [ f"./templates/{i}" for i in os.listdir("./templates") ] 
+    extra_files = []
 
-    open_browser(port)
+    print("")
+    print("* Watched:")
+    for path in [ "./templates", "./static/css", "./static/js" ]:
+        for file in os.listdir(f"{path}"):
+            print( f"\t{path}/{file}" )
+            extra_files.append( f"{path}/{file}" )
+    print("")
 
-    app.run(host=host, port=port, debug=True, extra_files=extra_files)
+    # extra_files.append([ f"./static/css/{j}" for j in os.listdir("./static/css") ])
 
-    # flask run --debug --extra-files templates/base.html
+    app.config["TEMPLATES_AUTO_RELOAD"] = True # possivelmente não funcionando ...
+    app.config["DEBUG"] = True # possivelmente redundante ...
+    # app.config["TESTING"] = True
+
+    running = True
+    browser_running = False
+
+    app.run(
+            host=host,
+            port=port,
+            debug=True,
+            extra_files=extra_files,
+        )
+
+    # comando: flask run --debug --extra-files templates/base.html
