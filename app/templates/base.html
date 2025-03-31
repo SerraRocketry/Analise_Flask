@@ -18,9 +18,12 @@
         <h1>Serra Rocketry</h1>
       </div>
       <div class="menu-list">
-        <a href="/home"><h2>Home</h2></a>
-        <a href="/analises"><h2>Análises de Dados</h2></a>
-        <a href="/tratamento"><h2>Tratamento de Dados</h2></a>
+        <!-- <a href="/home"><h2>Home</h2></a> -->
+        <a href="{{ url_for('page.index') }}" ><h2>Home</h2></a>
+        <!-- <a href="/analises"><h2>Análises de Dados</h2></a> -->
+        <a href="{{ url_for('page.analise') }}" ><h2>Análises de Dados</h2></a>
+        <!-- <a href="/tratamento"><h2>Tratamento de Dados</h2></a> -->
+        <a href="{{ url_for('page.galeria') }}" ><h2>Tratamento de Dados</h2></a>
       </div>
     </div>
     {% block content %} {% endblock %}
