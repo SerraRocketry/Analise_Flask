@@ -139,8 +139,9 @@ def update_filters():
 app = Flask(__name__)
 app.register_blueprint(page, url_prefix=f"/{project_name}",)
 
-if __name__ == '__main__':
-    
+#################################################
+
+def main():
     host = '0.0.0.0' # aberto para todos os IPs
     port = 5000
     extra_files = []
@@ -153,15 +154,6 @@ if __name__ == '__main__':
             extra_files.append( f"{path}/{file}" )
     print("")
 
-    # extra_files.append([ f"./static/css/{j}" for j in os.listdir("./static/css") ])
-
-    # page.config["TEMPLATES_AUTO_RELOAD"] = True # possivelmente não funcionando ...
-    # page.config["DEBUG"] = True # possivelmente redundante ...
-    # app.config["TESTING"] = True #
-
-    running = True
-    browser_running = False
-
     app.run(
             host=host,
             port=port,
@@ -169,4 +161,7 @@ if __name__ == '__main__':
             extra_files=extra_files,
         )
 
+if __name__ == '__main__':
+    main()
+    
     # comando: flask run --debug --extra-files templates/base.html
