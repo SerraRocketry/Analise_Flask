@@ -40,7 +40,11 @@
 
       <div class="card save" style="height: 30%">
         <h2>Salvar dados</h2>
-        <form action="/save_treatment" method="POST">
+        <!-- <form action="/save_treatment" method="POST">
+          <label for="name">Salvar o arquivo processado?</label>
+          <input type="submit" value="Salvar" />
+        </form> -->
+        <form action="{{ url_for('page.save_motor') }}" method="POST">
           <label for="name">Salvar o arquivo processado?</label>
           <input type="submit" value="Salvar" />
         </form>

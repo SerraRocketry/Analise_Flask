@@ -74,7 +74,12 @@
       </div>
       <div class="card save" style="height: 30%">
         <h2>Salvar análise</h2>
-        <form action="/save_motor" method="POST">
+        <!-- <form action="/save_motor" method="POST">
+          <label for="name">Informe o nome do motor:</label>
+          <input type="text" name="name" id="name" />
+          <input type="submit" value="Salvar" />
+        </form> -->
+        <form action="{{ url_for('page.save_motor') }}" method="POST">
           <label for="name">Informe o nome do motor:</label>
           <input type="text" name="name" id="name" />
           <input type="submit" value="Salvar" />

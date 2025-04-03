@@ -1,81 +1,96 @@
+
+
 from backend import motor_analisys, data_treatment
+import os
 
 import webbrowser
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, Blueprint
 
-app = Flask(__name__)
+project_name = "serra-rocketry"
 
-######################### Rotas principais #########################
+page = Blueprint(
+    name="page",
+    import_name=__name__,
+    template_folder="templates",
+    static_folder="static",
+    static_url_path="/static",
+    )
 
+# app = Flask(__name__)
 
-@app.route('/')
+######################### Rotas principais (Begin) #########################
+
+@page.route('/')
 def index():
     return render_template('index.html')
 
-
-@app.route('/home')
+@page.route('/home')
 def indexhome():
     return render_template('index.html')
 
-
-@app.route('/analises')
+@page.route('/analises')
 def analise():
     return render_template('analises.html', displayopt='none')
 
-
-@app.route('/tratamento')
+@page.route('/tratamento')
 def galeria():
     return render_template('tratamento.html', displayopt='none')
-#####################################################################
+
+######################### Rotas principais (End) #########################
 
 
-######################### Rotas de erros #########################
+######################### Rotas de erros (Begin) #########################
 
 
-@app.errorhandler(404)
+@page.errorhandler(404)
 def not_found(e):
     return render_template("404.html")
 
 
-@app.errorhandler(500)
+@page.errorhandler(500)
 def internal_error(e):
     return render_template("500.html")
-#####################################################################
+######################### Rotas de erros (End) #########################
 
-######################### Rotas de teste estático #########################
+###########################################################################
 
+######################### Rotas de teste estático (Begin) #########################
 
-@app.route('/motor_upload', methods=['POST'])
+@page.route('/motor_upload', methods=['POST'])
 def upload_motor():
     uploaded_file = request.files['file']
     return process_motor_file(uploaded_file)
 
-
-@app.route('/save_motor', methods=['POST'])
+@page.route('/save_motor', methods=['POST'])
 def save_motor():
     name = request.form['name']
     if name == '':
         return render_template('analises.html', msg='Nome do motor não informado!', displayopt='block')
     motor.save_analisys(name)
     return render_template('analises.html', msg='Análise salva com sucesso!', displayopt='block')
-#####################################################################
 
-######################### Rotas de Tratamento de Dados #########################
+######################### Rotas de teste estático (End) #########################
 
+###########################################################################
 
-@app.route('/data_upload', methods=['POST'])
+######################### Rotas de Tratamento de Dados (Begin) #########################
+
+@page.route('/data_upload', methods=['POST'])
 def upload_data():
     return process_data_file(request.files['file'])
 
 
-@app.route('/save_treatment', methods=['POST'])
+@page.route('/save_treatment', methods=['POST'])
 def save_treatment():
     name = file.replace('_raw.txt', '')
     data.save_treatment(name)
     return render_template('tratamento.html', msg='Tratamento salvo com sucesso!', displayopt='block')
-#####################################################################
 
-######################### Funções de visualização #########################
+######################### Rotas de Tratamento de Dados (End) #########################
+
+###########################################################################
+
+######################### Funções de visualização (Begin) #########################
 
 
 def process_motor_file(uploaded_file):
@@ -103,10 +118,9 @@ def process_data_file(uploaded_file):
 
 
 def open_browser(port):
-    webbrowser.open_new(f"http://localhost:{port}/")
+    webbrowser.open_new(f"http://localhost:{port}/{project_name}")
 
-
-@app.route('/update_filters', methods=['POST'])
+@page.route('/update_filters', methods=['POST'])
 def update_filters():
     global data
     threshold = float(request.form['threshold'])
@@ -120,8 +134,34 @@ def update_filters():
         'result': table_info
     })
 
+######################### Funções de visualização (End) #########################
+
+app = Flask(__name__)
+app.register_blueprint(page, url_prefix=f"/{project_name}",)
+
+#################################################
+
+def main():
+    host = '0.0.0.0' # aberto para todos os IPs
+    port = 5000
+    extra_files = []
+
+    print("")
+    print("* Watched:")
+    for path in [ "./templates", "./static/css", "./static/js" ]:
+        for file in os.listdir(f"{path}"):
+            print( f"\t{path}/{file}" )
+            extra_files.append( f"{path}/{file}" )
+    print("")
+
+    app.run(
+            host=host,
+            port=port,
+            debug=True,
+            extra_files=extra_files,
+        )
 
 if __name__ == '__main__':
-    port = 5000
-    open_browser(port)
-    app.run(host='0.0.0.0', port=port)
+    main()
+    
+    # comando: flask run --debug --extra-files templates/base.html

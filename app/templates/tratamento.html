@@ -4,9 +4,32 @@
     <h2>Página de tratamento de dados.</h2>
   </div>
   <div class="card">
-    <form
+    <!-- <form
       method="POST"
       action="/data_upload"
+      enctype="multipart/form-data"
+      id="upload-form"
+    >
+      <input
+        type="file"
+        name="file"
+        id="file"
+        accept=".txt,.csv"
+        style="display: none"
+      />
+      <div class="drop-area">
+        <div id="drop-area">
+          <h3>Arraste e solte o arquivo aqui ou clique para selecionar</h3>
+        </div>
+        <div id="file-confirmation" style="display: none;">
+          <p>Arquivo recebido: <span id="file-name"></span></p>
+        </div>
+      </div>
+      <input type="submit" value="Upload" id="upload-button" disabled />
+    </form> -->
+    <form
+      method="POST"
+      action="{{ url_for('page.upload_data') }}"
       enctype="multipart/form-data"
       id="upload-form"
     >
