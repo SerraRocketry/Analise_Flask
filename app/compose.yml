@@ -1,0 +1,15 @@
+services:
+  serra-rocketry:
+    container_name: serra-rocketry-compose
+    
+    build: .
+
+    ports:
+      - 8140:8140
+
+    volumes:
+      - ./persistence:/app/persistence
+
+    stdin_open: true
+    tty: true
+    restart: always

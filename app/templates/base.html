@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Serra Rocketry</title>
     <link
-      href="{{url_for('static', filename = 'css/app.css')}}"
+      href="{{url_for('page.static', filename = 'css/app.css')}}"
       rel="stylesheet"
     />
     <link rel="icon" type="image/x-icon" href="static/assets/favicon.ico" />
@@ -14,7 +14,9 @@
   <body>
     <div class="sidebar">
       <div class="logo-div">
-        <img src="static/assets/LOGO - SEM TEXTO.png" alt="" class="logo" />
+        <!-- <img src="static/assets/LOGO - SEM TEXTO.png" alt="" class="logo" /> -->
+        <!-- {{ url_for('page.static', filename = 'js/jquery-3.7.1.js') }} -->
+        <img src="{{ url_for('page.static', filename = 'assets/LOGO - SEM TEXTO.png') }}" alt="" class="logo" />
         <h1>Serra Rocketry</h1>
       </div>
       <div class="menu-list">
@@ -27,7 +29,7 @@
       </div>
     </div>
     {% block content %} {% endblock %}
-    <script src="{{ url_for('static', filename = 'js/jquery-3.7.1.js') }}"></script>
-    <script src="{{ url_for('static', filename = 'js/app.js') }}"></script>
+    <script src="{{ url_for('page.static', filename = 'js/jquery-3.7.1.js') }}"></script>
+    <script src="{{ url_for('page.static', filename = 'js/app.js') }}"></script>
   </body>
 </html>

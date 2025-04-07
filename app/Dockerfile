@@ -19,5 +19,8 @@ COPY . .
 # 7. expose port 8140 for application server
 EXPOSE 8140
 
+# ?. creating an anonymous persistence as a fallback, just in case ...
+VOLUME ./persistence
+
 # 8. define entrypoint command to start the application-server
 ENTRYPOINT [ "gunicorn", "wsgi:app" ]
