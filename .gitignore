@@ -172,6 +172,8 @@ cython_debug/
 
 # Pastas específicas
 __pycache__/
-
-
 .vscode
+
+# Gabriel
+app/dev_details.txt
+app/browser_sync_command.txt
